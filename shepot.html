@@ -1,6 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
+    	<meta charset="UTF-8">
       <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
@@ -18,6 +19,75 @@
     <div class="container">
     <div class="center-align"><h2>Шепот</h2></div>
      <div class="card-panel center-align">
+ 
+       <div class="col s12" style="padding-top: 20px;">
+    <p><b>Уведомления через</b></p>
+  <div class="switch">
+    <label>
+      Окно программы
+      <input id="units" type="checkbox">
+      <span class="lever"></span>
+      Timeline
+    </label>
+  </div>
+          </div>
+       <div class="col s12" style="padding-top: 20px;">
+    <p><b>Вибрация</b></p>
+  <div class="switch">
+    <label>
+      Длинная
+      <input id="vibe" type="checkbox">
+      <span class="lever"></span>
+      Короткая
+    </label>
+  </div>
+          </div>
+          
+          
+      <div class="col s12" style="padding-top: 20px;">
+    <p><b>"завтра" без указания времени</b></p>
+    <p class="range-field">
+      <input type="range" id="tomorow" min="5" max="23" />
+    </p>
+       </div>
+       
+     <div class="col s12" style="padding-top: 20px;">
+    <p><b>Время для "утром"</b></p>
+    <p class="range-field">
+      <input type="range" id="utro" min="5" max="23" />
+    </p>
+       </div>
+       
+       
+     <div class="col s12" style="padding-top: 20px;">
+    <p><b>Время для "днем"</b></p>
+    <p class="range-field">
+      <input type="range" id="obed" min="6" max="23" />
+    </p>
+       </div>
+       
+     <div class="col s12" style="padding-top: 20px;">
+    <p><b>Время для "вечером"</b></p>
+    <p class="range-field">
+      <input type="range" id="vecher" min="6" max="23" />
+    </p>
+       </div>
+       
+ 
+      <div class="col s12" style="padding-top: 20px;">
+      	  <p><b>Время для "напомнить позже" (минуты)</b></p>
+          <input id="snooze" type="number" class="validate">
+          <label for="snooze"></label>
+       </div>
+       
+       
+       
+       
+       
+       
+       
+          
+    <div  class="center-align" style="padding-top: 20px;"><button onclick="save();" class="btn"><i class="material-icons left">save</i>Сохранить</button></div>
  
      </div>
   <div class="col s12 center-align">
@@ -39,5 +109,50 @@
 
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+  
+  
+  <script>
+  console.log(window.location.hash.substring(1));
+var data=JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+  	
+if (data.note_type=='timeline'){
+  $('#units').prop('checked', true);
+
+};
+if (data.vibe_type=='short'){
+  $('#vibe').prop('checked', true);
+
+};
+$('#tomorow').val(data.tomorow);
+$('#utro').val(data.utro);
+$('#obed').val(data.obed);
+$('#vecher').val(data.vecher);
+$('#snooze').val(data.snooze);
+Materialize.updateTextFields();
+
+function save(){
+  var pins='main';
+  if ($('#units').is(":checked")){pins='timeline';}
+  var vibe='long';
+  if ($('#vibe').is(":checked")){vibe='short';}
+  options={};
+  options.note_type=pins;
+  options.vibe_type=vibe;
+  options.tomorow=$('#tomorow').val();
+  options.utro=$('#utro').val();
+  options.obed=$('#obed').val();
+  options.vecher=$('#vecher').val();
+  options.snooze=$('#snooze').val();
+ 
+
+  return_to='https://cloudpebble.net/ide/emulator/config?';
+  //return_to='pebblejs://close#'
+
+  document.location = return_to + encodeURIComponent(JSON.stringify(options));
+
+
+};
+  	
+  </script>
     </body>
   </html>
